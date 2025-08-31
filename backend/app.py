@@ -19,12 +19,14 @@ sia = SentimentIntensityAnalyzer()
 # ---------------------------
 # Flask app setup
 # ---------------------------
-app = Flask(__name__, static_folder=None)  # Disable default static folder
+# Set static_folder to frontend/build for React
+app = Flask(__name__, static_folder="frontend/build", static_url_path="")
 CORS(app)
 
 UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
 
 # ---------------------------
 # Text Extraction Function
@@ -72,6 +74,7 @@ def extract_text_from_file(filepath):
     else:
         return "Unsupported file format"
 
+
 # ---------------------------
 # Text Analysis Function
 # ---------------------------
@@ -116,6 +119,7 @@ def analyze_text(text):
         "suggestions": suggestions
     }
 
+
 # ---------------------------
 # File Upload Endpoint
 # ---------------------------
@@ -142,19 +146,18 @@ def upload_file():
         "analysis": analysis
     })
 
+
 # ---------------------------
 # Serve React Frontend
 # ---------------------------
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_frontend(path):
-    # Absolute path to frontend/build relative to this app.py
-    build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "build")
-
-    if path != "" and os.path.exists(os.path.join(build_dir, path)):
-        return send_from_directory(build_dir, path)
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
     else:
-        return send_from_directory(build_dir, "index.html")
+        return send_from_directory(app.static_folder, "index.html")
+
 
 # ---------------------------
 # Run Flask
