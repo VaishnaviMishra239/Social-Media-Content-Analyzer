@@ -1,0 +1,9 @@
+Flask
+pytesseract
+Pillow
+pdfplumber
+textblob
+textstat
+Flask-Cors==4.0.0
+PyPDF2==3.0.1
+PyMuPDF==1.24.9
