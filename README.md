@@ -10,35 +10,35 @@ light/dark mode toggle for better readability.
 
 <h2 style="font-size:28px;">🚀 Features</h2>
 
-- Upload **PDF/Image** files and extract text.  
-- Works with both digital and scanned PDFs (**OCR support**).  
-- **Sentiment detection** (positive, neutral, negative) with polarity score.  
-- Extracts **top keywords** and generates suggestions.  
-- Light/Dark theme toggle with styled text box.  
-- **User-friendly interface**.  
+- Upload **PDF/Image** files and extract text.  <br> 
+- Works with both digital and scanned PDFs (**OCR support**).  <br> 
+- **Sentiment detection** (positive, neutral, negative) with polarity score.  <br> 
+- Extracts **top keywords** and generates suggestions.  <br> 
+- Light/Dark theme toggle with styled text box.  <br> 
+- **User-friendly interface**.  <br> 
 
 
 
-<h2 style="font-size:28px;">🛠️ Tools, Technologies & Libraries</h2>
+<h2 style="font-size:28px;">🛠️ Tools, Technologies & Libraries</h2><br> 
 
-<h3 style="font-size:22px;">Frontend</h3>
-- ⚛️ React.js (UI development)  
-- 🎨 CSS / Inline styles for theming  
-- 🌗 Theme Toggle (Light/Dark Mode)  
+<h3 style="font-size:22px;">Frontend</h3><br>
+- ⚛️ React.js (UI development) <br> 
+- 🎨 CSS / Inline styles for theming  <br> 
+- 🌗 Theme Toggle (Light/Dark Mode)  <br> 
 
-<h3 style="font-size:22px;">Backend</h3>
-- 🐍 Flask (Python web framework)  
-- 🌍 Flask-CORS (cross-origin requests)  
+<h3 style="font-size:22px;">Backend</h3><br> 
+- 🐍 Flask (Python web framework)  <br> 
+- 🌍 Flask-CORS (cross-origin requests)  <br> 
 
-<h3 style="font-size:22px;">Text Extraction & OCR</h3>
-- 📄 PyMuPDF (fitz) – extract text from PDFs  
-- 🔍 PyPDF2 – parse digital PDFs  
-- 🖼 Pillow (PIL) – image handling  
-- 🤖 PyTesseract – OCR for scanned PDFs  
+<h3 style="font-size:22px;">Text Extraction & OCR</h3><br> 
+- 📄 PyMuPDF (fitz) – extract text from PDFs  <br> 
+- 🔍 PyPDF2 – parse digital PDFs  <br> 
+- 🖼 Pillow (PIL) – image handling  <br> 
+- 🤖 PyTesseract – OCR for scanned PDFs<br>   
 
-<h3 style="font-size:22px;">Natural Language Processing (NLP)</h3>
-- 🧠 NLTK (Natural Language Toolkit)  
-- 📝 VADER SentimentIntensityAnalyzer  
+<h3 style="font-size:22px;">Natural Language Processing (NLP)</h3><br> 
+- 🧠 NLTK (Natural Language Toolkit)  <br> 
+- 📝 VADER SentimentIntensityAnalyzer <br>  
 
 ---
 
