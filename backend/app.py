@@ -1,34 +1,33 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 import pytesseract
 from PyPDF2 import PdfReader
 from PIL import Image
-import fitz 
+import fitz
 from nltk.sentiment import SentimentIntensityAnalyzer
 import nltk
 from collections import Counter
 import re
 
-
+# ---------------------------
+# NLTK setup
+# ---------------------------
 nltk.download("vader_lexicon")
-
-
 sia = SentimentIntensityAnalyzer()
 
-
-pytesseract.pytesseract.tesseract_cmd = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
-
-app = Flask(__name__)
+# ---------------------------
+# Flask app setup
+# ---------------------------
+app = Flask(__name__, static_folder=None)  # Disable default static folder
 CORS(app)
 
 UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-
 # ---------------------------
-# Text Extraction
+# Text Extraction Function
 # ---------------------------
 def extract_text_from_file(filepath):
     ext = os.path.splitext(filepath)[1].lower()
@@ -36,12 +35,11 @@ def extract_text_from_file(filepath):
     if ext == ".pdf":
         text = ""
         try:
-           
             reader = PdfReader(filepath)
             for page in reader.pages:
                 extracted = page.extract_text()
                 if extracted:
-                    text += extracted + "\n\n"  
+                    text += extracted + "\n\n"
 
             if not text.strip():
                 doc = fitz.open(filepath)
@@ -52,13 +50,14 @@ def extract_text_from_file(filepath):
 
         except Exception as e:
             return f"Error extracting PDF: {e}"
+
         return text.strip()
 
     elif ext in [".png", ".jpg", ".jpeg"]:
         try:
             img = Image.open(filepath)
             text = pytesseract.image_to_string(img)
-            return text.strip() 
+            return text.strip()
         except Exception as e:
             return f"Error extracting image: {e}"
 
@@ -66,19 +65,17 @@ def extract_text_from_file(filepath):
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 text = f.read().strip()
-            return text 
+            return text
         except Exception as e:
             return f"Error reading text file: {e}"
 
     else:
         return "Unsupported file format"
 
-
 # ---------------------------
-# Text Analysis (with VADER)
+# Text Analysis Function
 # ---------------------------
 def analyze_text(text):
-    """Perform sentiment analysis + keyword frequency + suggestions"""
     if not text.strip():
         return {
             "sentiment": "neutral",
@@ -87,7 +84,6 @@ def analyze_text(text):
             "suggestions": ["No meaningful text found to analyze."]
         }
 
-    # Use VADER for sentiment analysis
     sentiment_scores = sia.polarity_scores(text)
     polarity = sentiment_scores["compound"]
 
@@ -98,16 +94,14 @@ def analyze_text(text):
     else:
         sentiment = "neutral"
 
-    # Simple keyword extraction
     words = re.findall(r"\b\w+\b", text.lower())
     stopwords = {"the", "is", "and", "a", "to", "of", "in", "for", "on", "at", "with", "as", "by", "an"}
     keywords = [w for w in words if w not in stopwords and len(w) > 3]
     top_keywords = [w for w, _ in Counter(keywords).most_common(5)]
 
-    # Suggestions
     suggestions = []
     if sentiment == "negative":
-        suggestions.append("This post has negative sentiment. Consider rephrasing in a more positive or supportive tone.")
+        suggestions.append("This post has negative sentiment. Consider rephrasing positively.")
     if len(top_keywords) < 3:
         suggestions.append("Add more relevant hashtags or keywords to boost visibility.")
     if len(text.split()) < 30:
@@ -122,9 +116,8 @@ def analyze_text(text):
         "suggestions": suggestions
     }
 
-
 # ---------------------------
-# Upload Endpoint
+# File Upload Endpoint
 # ---------------------------
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -145,10 +138,27 @@ def upload_file():
         "message": "File uploaded and processed successfully",
         "filename": file.filename,
         "content": extracted_text,
-        "text": extracted_text, 
+        "text": extracted_text,
         "analysis": analysis
     })
 
+# ---------------------------
+# Serve React Frontend
+# ---------------------------
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_frontend(path):
+    # Absolute path to frontend/build relative to this app.py
+    build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "build")
 
+    if path != "" and os.path.exists(os.path.join(build_dir, path)):
+        return send_from_directory(build_dir, path)
+    else:
+        return send_from_directory(build_dir, "index.html")
+
+# ---------------------------
+# Run Flask
+# ---------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
