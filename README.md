@@ -19,24 +19,24 @@ light/dark mode toggle for better readability.
 
 
 
-<h2 style="font-size:28px;">🛠️ Tools, Technologies & Libraries</h2><br> 
+<h2 style="font-size:28px;">🛠️ Tools, Technologies & Libraries</h2>
 
-<h3 style="font-size:22px;">Frontend</h3><br>
+<h3 style="font-size:22px;">Frontend</h3>
 - ⚛️ React.js (UI development) <br> 
 - 🎨 CSS / Inline styles for theming  <br> 
 - 🌗 Theme Toggle (Light/Dark Mode)  <br> 
 
-<h3 style="font-size:22px;">Backend</h3><br> 
+<h3 style="font-size:22px;">Backend</h3>
 - 🐍 Flask (Python web framework)  <br> 
 - 🌍 Flask-CORS (cross-origin requests)  <br> 
 
-<h3 style="font-size:22px;">Text Extraction & OCR</h3><br> 
+<h3 style="font-size:22px;">Text Extraction & OCR</h3> 
 - 📄 PyMuPDF (fitz) – extract text from PDFs  <br> 
 - 🔍 PyPDF2 – parse digital PDFs  <br> 
 - 🖼 Pillow (PIL) – image handling  <br> 
 - 🤖 PyTesseract – OCR for scanned PDFs<br>   
 
-<h3 style="font-size:22px;">Natural Language Processing (NLP)</h3><br> 
+<h3 style="font-size:22px;">Natural Language Processing (NLP)</h3>
 - 🧠 NLTK (Natural Language Toolkit)  <br> 
 - 📝 VADER SentimentIntensityAnalyzer <br>  
 
